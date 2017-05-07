@@ -45,7 +45,7 @@ describe("Server", function() {
 		it("GET request to bundle file", function(done) {
 			request(app).get("/public/bundle.js")
 			.expect("Content-Type", "application/javascript; charset=UTF-8")
-			.expect("Content-Length", "2780")
+			.expect("Content-Length", "2985")
 			.expect("Access-Control-Allow-Origin", "*")
 			.expect(200, /console\.log\("Hey\."\)/, done);
 		});
@@ -120,7 +120,7 @@ describe("Server", function() {
 
 		it("GET request to bundle file", function(done) {
 			request(app).get("/bundle.js")
-			.expect("Content-Length", "2780")
+			.expect("Content-Length", "2985")
 			.expect(200, /console\.log\("Hey\."\)/, done);
 		});
 	});
@@ -153,7 +153,7 @@ describe("Server", function() {
 			var instance = middleware(compiler, {
 				stats: "errors-only",
 				quiet: true,
-				publicPath: "/",
+				publicPath: "/"
 			});
 			app.use(instance);
 			listen = listenShorthand(done);
@@ -161,9 +161,9 @@ describe("Server", function() {
 		after(close);
 
 		it("request to both bundle files", function(done) {
-			request(app).get("/foo.js")
+			request(app).get("/js1/foo.js")
 			.expect(200, function() {
-				request(app).get("/bar.js")
+				request(app).get("/js2/bar.js")
 				.expect(200, done);
 			});
 		});

@@ -36,7 +36,7 @@ module.exports = function(compiler, options) {
 			return goNext();
 		}
 
-		var filename = getFilenameFromUrl(context.options.publicPath, context.compiler.outputPath, req.url);
+		var filename = getFilenameFromUrl(context.options.publicPath, context.compiler, req.url);
 		if(filename === false) return goNext();
 
 
@@ -69,14 +69,13 @@ module.exports = function(compiler, options) {
 					res.setHeader(name, context.options.headers[name]);
 				}
 			}
-			// Express automatically sets the statusCode to 200, but not all servers do (Koa).
-			res.statusCode = res.statusCode || 200;
+
 			if(res.send) res.send(content);
 			else res.end(content);
 		}
 	}
 
-	webpackDevMiddleware.getFilenameFromUrl = getFilenameFromUrl.bind(this, context.options.publicPath, context.compiler.outputPath);
+	webpackDevMiddleware.getFilenameFromUrl = getFilenameFromUrl.bind(this, context.options.publicPath, context.compiler);
 	webpackDevMiddleware.waitUntilValid = shared.waitUntilValid;
 	webpackDevMiddleware.invalidate = shared.invalidate;
 	webpackDevMiddleware.close = shared.close;
